@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR Studio Ultimate PRO</title>
+<script src="https://unpkg.com/qr-code-styling@1.9.2/lib/qr-code-styling.js"></script>
+<style>
+:root{
+ --bg:#050812;--panel:#0b1220;--panel2:#0e1829;--line:#20314a;--txt:#f4f8ff;
+ --muted:#8fa4bd;--cyan:#20d9ff;--violet:#8b5cf6;--green:#27d7a0;--gold:#f5c451;
+ --danger:#ff5f70;--shadow:0 30px 90px #0008;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;color:var(--txt);font:13px Inter,system-ui,-apple-system,Segoe UI,sans-serif;
+background:radial-gradient(1000px 600px at 8% -15%,#12466b55,transparent 60%),
+radial-gradient(900px 600px at 100% 5%,#5b2da655,transparent 58%),var(--bg)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+header{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 3.5%;
+position:sticky;top:0;z-index:50;background:#050812dd;border-bottom:1px solid var(--line);backdrop-filter:blur(18px)}
+.brand{display:flex;gap:12px;align-items:center}.mark{width:43px;height:43px;border-radius:14px;display:grid;place-items:center;
+font-weight:1000;background:linear-gradient(135deg,var(--cyan),var(--violet));color:#06111a;box-shadow:0 12px 35px #20d9ff33}
+.brand strong{display:block;font-size:18px;letter-spacing:.2px}.brand span{color:var(--muted);font-size:10px}
+.topActions{display:flex;gap:8px;align-items:center}.pill{border:1px solid #2a4662;background:#0b1727;color:#b9cce0;padding:8px 11px;border-radius:999px;font-size:10px}
+main{max-width:1520px;margin:auto;padding:26px 3.5% 70px}
+.hero{text-align:center;max-width:980px;margin:5px auto 25px}.hero h1{font-size:clamp(35px,5vw,68px);line-height:.98;margin:0 0 12px;
+background:linear-gradient(90deg,#fff,var(--cyan),#c8a7ff);-webkit-background-clip:text;color:transparent}
+.hero p{color:var(--muted);line-height:1.65;margin:0}.featurebar{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:15px}
+.featurebar span{border:1px solid #23405a;background:#091426;padding:6px 9px;border-radius:999px;color:#a9bfd5;font-size:9px}
+.layout{display:grid;grid-template-columns:390px minmax(390px,1fr) 350px;gap:16px}
+.panel{background:linear-gradient(180deg,#0e192a,#08111e);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px}
+.panel h3{margin:0 0 12px;font-size:13px}.sec{padding-bottom:15px;margin-bottom:15px;border-bottom:1px solid #1b2b41}.sec:last-child{border:0;margin:0;padding:0}
+label{display:block;color:#9db2c9;font-size:10px;margin:9px 0 5px}.input,select,textarea{width:100%;border:1px solid #29415b;background:#07101c;color:var(--txt);border-radius:10px;padding:10px;outline:none}
+.input:focus,select:focus,textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #20d9ff12}textarea{min-height:72px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+input[type=color]{width:100%;height:38px;border:1px solid #29415b;border-radius:9px;background:#07101c;padding:3px}.range{width:100%;accent-color:var(--cyan)}
+.tabs{display:flex;gap:5px;flex-wrap:wrap}.tab,.preset,.mini{cursor:pointer;background:#091626;border:1px solid #29405a;color:#abc0d8;padding:8px 9px;border-radius:9px;font-size:10px}
+.tab.active,.tab:hover,.preset:hover,.mini:hover{color:#fff;border-color:var(--cyan);background:#10304a}.sw{display:flex;align-items:center;gap:8px;color:#b9c9da;font-size:10px;margin-top:8px}.sw input{accent-color:var(--cyan)}
+.stage{min-height:690px;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;overflow:hidden;border-radius:15px;
+background:radial-gradient(circle at 50% 35%,#18334d,#07101b 67%);border:1px dashed #2b405a;padding:28px}
+.stage:before{content:"";position:absolute;inset:0;opacity:.1;background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:30px 30px;mask-image:linear-gradient(to bottom,black,transparent)}
+.preview{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}.qrframe{padding:18px;background:#fff;border-radius:20px;display:inline-flex;box-shadow:0 30px 100px #000b;transition:.25s}
+.qrframe canvas,.qrframe svg{max-width:100%;height:auto}.caption{margin-top:12px;color:#8fa5bd;font-size:10px}.toolrow{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:15px;position:relative;z-index:1}
+.btn{border:0;border-radius:10px;padding:11px 7px;color:white;background:#17283d;cursor:pointer;font-weight:800;font-size:10px}.btn.primary{background:linear-gradient(135deg,#06b6d4,#7c3aed)}.btn.good{background:#0b604c}.btn.gold{background:#705216}.btn:hover{filter:brightness(1.15)}
+.previewOptions{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px;position:relative;z-index:1}.chip{border:1px solid #29405a;background:#091626;color:#9fb4cb;border-radius:999px;padding:6px 9px;font-size:9px;cursor:pointer}.chip.active{border-color:var(--cyan);color:#fff}
+.presetgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.preset{height:48px}
+.metric{display:flex;justify-content:space-between;border-bottom:1px solid #1c2b40;padding:8px 0;font-size:10px}.metric b{color:#dceaff}.note{font-size:9px;line-height:1.6;color:#7188a2}
+.badgeRow{display:flex;gap:5px;flex-wrap:wrap}.badge{border:1px solid #2a425e;color:#9eb4cb;padding:5px 7px;border-radius:7px;font-size:9px}
+.divider{height:1px;background:#1c2b40;margin:11px 0}.smallTitle{font-size:10px;color:#cbd9e8;font-weight:800;text-transform:uppercase;letter-spacing:.7px}
+#history{display:grid;gap:6px;max-height:180px;overflow:auto}.hist{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:7px;border:1px solid #20334b;background:#081321;border-radius:9px;font-size:9px}
+.hist button{background:none;border:0;color:var(--cyan)}.hidden{display:none!important}
+footer{text-align:center;color:#607895;font-size:9px;padding:24px;border-top:1px solid #17283d}
+.toast{position:fixed;right:18px;bottom:18px;background:#0d1d30;border:1px solid #2c526f;color:#eaf6ff;padding:11px 14px;border-radius:11px;box-shadow:var(--shadow);z-index:100;opacity:0;transform:translateY(10px);transition:.2s}
+.toast.show{opacity:1;transform:none}.scanok{color:var(--green)}.scanwarn{color:var(--gold)}
+@media(max-width:1200px){.layout{grid-template-columns:350px minmax(330px,1fr)}.right{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:16px}.stage{min-height:590px}}
+@media(max-width:760px){header{height:68px}.topActions .pill{display:none}.layout{grid-template-columns:1fr}.right{display:block}.panel{margin-bottom:14px}.stage{min-height:470px}.toolrow{grid-template-columns:repeat(2,1fr)}.qrframe{padding:10px}.hero h1{font-size:38px}}
+@media print{body{background:#fff;color:#000}header,main>.hero,.layout>section:first-child,.right,footer,.toolrow,.previewOptions{display:none!important}.layout{display:block}.panel{border:0;box-shadow:none}.stage{border:0;background:#fff;min-height:auto}.stage:before{display:none}.caption{color:#333}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><div class="mark">QR</div><div><strong>QR Studio Ultimate PRO</strong><span>Enterprise QR Creator • Brand Designer • Export Suite</span></div></div>
+ <div class="topActions"><span class="pill">● 100% Browser Based</span><span class="pill">PRO MAX+</span></div>
+</header>
+
+<main>
+<section class="hero">
+ <h1>Ultimate QR Design Studio</h1>
+ <p>Create highly branded, scan-ready QR codes with advanced patterns, eye styles, gradients, logos, frames, templates, content types and professional export controls.</p>
+ <div class="featurebar"><span>LIVE PREVIEW</span><span>20+ PRESETS</span><span>BRAND KIT</span><span>HISTORY</span><span>PNG • SVG</span><span>PRINT READY</span><span>SMART CONTENT</span></div>
+</section>
+
+<div class="layout">
+<!-- LEFT -->
+<section class="panel">
+ <div class="sec"><h3>⚡ Content Engine</h3>
+  <label>QR Content Type</label>
+  <select id="type" class="input">
+   <option value="url">Website / URL</option><option value="text">Plain Text</option><option value="wifi">Wi‑Fi Network</option>
+   <option value="email">Email</option><option value="phone">Phone</option><option value="sms">SMS</option><option value="vcard">Contact Card</option><option value="geo">Location / Geo</option><option value="calendar">Calendar / Event</option>
+  </select>
+  <label>Content</label><textarea id="data" placeholder="Enter URL, text or encoded data...">https://example.com</textarea>
+  <div class="row"><div><label>Label</label><input id="label" class="input" placeholder="Optional"></div><div><label>Language</label><select id="lang" class="input"><option>Auto</option><option>English</option><option>Urdu</option></select></div></div>
+  <div class="row"><div><label>Version</label><select id="version" class="input"><option value="auto">Auto</option><option>1</option><option>5</option><option>10</option><option>20</option><option>30</option><option>40</option></select></div><div><label>Preview scale</label><select id="scale" class="input"><option>Compact</option><option selected>Balanced</option><option>Large</option></select></div></div>
+ </div>
+
+ <div class="sec"><h3>✦ Pattern Studio</h3>
+  <div class="tabs" id="dots">
+   <button class="tab active" data-v="square">Square</button><button class="tab" data-v="dots">Dots</button><button class="tab" data-v="rounded">Rounded</button>
+   <button class="tab" data-v="extra-rounded">Extra Round</button><button class="tab" data-v="classy">Classy</button><button class="tab" data-v="classy-rounded">Classy Round</button>
+  </div>
+  <label>Corner / Eye Shape</label><div class="tabs" id="corner"><button class="tab active" data-v="square">Square</button><button class="tab" data-v="dot">Dot</button><button class="tab" data-v="extra-rounded">Round</button></div>
+  <label>Corner Dot</label><div class="tabs" id="cornerDot"><button class="tab active" data-v="square">Square</button><button class="tab" data-v="dot">Dot</button></div>
+ </div>
+
+ <div class="sec"><h3>🎨 Color & Gradient Lab</h3>
+  <div class="row"><div><label>Foreground</label><input id="fg" type="color" value="#111827"></div><div><label>Background</label><input id="bg" type="color" value="#ffffff"></div></div>
+  <label class="sw"><input id="gradient" type="checkbox"> Enable dual-color gradient</label>
+  <div class="row" id="gc" style="display:none"><div><label>Start</label><input id="g1" type="color" value="#06b6d4"></div><div><label>End</label><input id="g2" type="color" value="#7c3aed"></div></div>
+  <label>Gradient rotation <b id="rv">45°</b></label><input id="rotation" class="range" type="range" min="0" max="360" value="45">
+ </div>
+
+ <div class="sec"><h3>🏷 Brand Kit</h3>
+  <input id="logo" class="input" type="file" accept="image/*">
+  <div class="row"><div><label>Logo size <b id="lsv">25%</b></label><input id="logosize" class="range" type="range" min="10" max="40" value="25"></div><div><label>Logo margin <b id="lmv">5</b></label><input id="logomargin" class="range" type="range" min="0" max="15" value="5"></div></div>
+  <label class="sw"><input id="showlogo" type="checkbox"> Show uploaded logo</label>
+  <label>Logo background</label><select id="logoBg" class="input"><option value="none">None</option><option value="#ffffff">White</option><option value="#000000">Black</option></select>
+ </div>
+
+ <div class="sec"><h3>⚙ Quality & Safety</h3>
+  <div class="row"><div><label>Size <b id="sv">420</b> px</label><input id="size" class="range" type="range" min="180" max="1400" value="420"></div><div><label>Margin <b id="mv">12</b></label><input id="margin" class="range" type="range" min="0" max="50" value="12"></div></div>
+  <label>Error Correction</label><select id="ec" class="input"><option>L — Low</option><option value="M" selected>M — Medium</option><option value="Q">Q — Quartile</option><option value="H">H — High / Logo</option></select>
+  <label class="sw"><input id="safe" type="checkbox" checked> Safe-zone assist (recommended)</label>
+ </div>
+
+ <div class="sec"><h3>💾 Project</h3>
+  <div class="row"><button class="btn" id="saveProject">SAVE PROJECT</button><button class="btn" id="loadProject">LOAD PROJECT</button></div>
+  <div class="row" style="margin-top:7px"><button class="btn" id="reset">RESET</button><button class="btn gold" id="random">RANDOM STYLE</button></div>
+ </div>
+</section>
+
+<!-- CENTER -->
+<section class="panel">
+ <div class="stage">
+  <div class="preview"><div class="qrframe" id="qr"></div><div class="caption" id="caption">LIVE PREVIEW • Scan with your phone</div></div>
+  <div class="previewOptions">
+   <button class="chip active" id="white">White Frame</button><button class="chip" id="dark">Dark Frame</button><button class="chip" id="transparent">Transparent</button><button class="chip" id="shadowToggle">Soft Shadow</button>
+  </div>
+  <div class="toolrow">
+   <button class="btn primary" id="png">PNG</button><button class="btn" id="svg">SVG</button><button class="btn good" id="copy">COPY</button><button class="btn" id="print">PRINT</button><button class="btn gold" id="downloadProject">EXPORT JSON</button>
+  </div>
+  <div style="position:relative;z-index:1;margin-top:13px;text-align:center;font-size:9px;color:#748ba5">
+   <span id="scanStatus" class="scanok">● READY</span> • <span id="dataInfo">0 characters</span> • <span id="contrastInfo">High contrast</span>
+  </div>
+ </div>
+</section>
+
+<!-- RIGHT -->
+<aside class="right">
+ <section class="panel">
+  <div class="sec"><h3>🔥 Ultimate Templates</h3><div class="presetgrid">
+   <button class="preset" data-p="classic">Classic</button><button class="preset" data-p="corporate">Corporate</button><button class="preset" data-p="neon">Neon</button>
+   <button class="preset" data-p="luxury">Luxury</button><button class="preset" data-p="ocean">Ocean</button><button class="preset" data-p="violet">Violet</button>
+   <button class="preset" data-p="forest">Forest</button><button class="preset" data-p="sunset">Sunset</button><button class="preset" data-p="mono">Mono</button>
+   <button class="preset" data-p="gold">Gold</button><button class="preset" data-p="ice">Ice</button><button class="preset" data-p="ruby">Ruby</button>
+  </div></div>
+
+  <div class="sec"><h3>🖼 Frame & Branding</h3>
+   <label>Frame Text</label><input id="frameText" class="input" value="SCAN ME">
+   <label>Frame Style</label><select id="frameStyle" class="input"><option value="plain">Plain</option><option value="scan">Scan Me</option><option value="branded">Branded</option><option value="badge">Badge</option></select>
+   <label class="sw"><input id="captionOn" type="checkbox" checked> Show preview caption</label>
+  </div>
+
+  <div class="sec"><h3>📚 QR History</h3><div id="history"><div class="note">Your recent designs will appear here.</div></div></div>
+
+  <div class="sec"><h3>📊 Smart Diagnostics</h3>
+   <div class="metric"><span>Pattern</span><b id="mPattern">Square</b></div><div class="metric"><span>Error correction</span><b id="mEC">M</b></div>
+   <div class="metric"><span>Canvas</span><b id="mSize">420 × 420</b></div><div class="metric"><span>Content</span><b id="mType">URL</b></div>
+   <div class="metric"><span>Logo</span><b id="mLogo">Off</b></div><div class="metric"><span>Gradient</span><b id="mGradient">Off</b></div>
+  </div>
+
+  <div><div class="smallTitle">Professional tips</div><p class="note">Use H error correction when adding a logo. Keep strong contrast, preserve the quiet zone, and scan-test the final artwork before printing.</p></div>
+ </section>
+</aside>
+</div>
+</main>
+
+<footer>QR Studio Ultimate PRO • Client-side QR generation • Design data stays in your browser • Built for professional branding & print workflows</footer>
+<div id="toast" class="toast"></div>
+
+<script>
+const $=x=>document.getElementById(x);
+let dots="square",corner="square",cornerDot="square",logoData=null,frameMode="white",shadow=true;
+const presets={
+ classic:["square","#111827","#ffffff","#111827","#111827"],corporate:["classy-rounded","#0f172a","#ffffff","#0f172a","#2563eb"],
+ neon:["dots","#00e5ff","#050816","#00e5ff","#8b5cf6"],luxury:["classy","#15110a","#f5ead2","#d4a84f","#6b4a18"],
+ ocean:["rounded","#075985","#ecfeff","#06b6d4","#075985"],violet:["dots","#6d28d9","#faf5ff","#a855f7","#4f46e5"],
+ forest:["extra-rounded","#14532d","#f0fdf4","#22c55e","#166534"],sunset:["rounded","#9a3412","#fff7ed","#fb923c","#db2777"],
+ mono:["square","#000000","#ffffff","#000000","#000000"],gold:["classy","#4a350b","#fffaf0","#f4c95d","#9a6b00"],
+ ice:["extra-rounded","#075985","#f0fbff","#22d3ee","#2563eb"],ruby:["dots","#7f1d1d","#fff7f7","#fb7185","#991b1b"]
+};
+const qr=new QRCodeStyling({width:420,height:420,type:"canvas",data:"https://example.com",margin:12,qrOptions:{errorCorrectionLevel:"M"},
+dotsOptions:{type:"square",color:"#111827"},backgroundOptions:{color:"#ffffff"},cornersSquareOptions:{type:"square",color:"#111827"},cornersDotOptions:{type:"square",color:"#111827"}});
+qr.append($("qr"));
+
+function content(){
+ let t=$("type").value,v=$("data").value||" ";
+ if(t==="email"&&!v.startsWith("mailto:"))v="mailto:"+v;
+ if(t==="phone"&&!v.startsWith("tel:"))v="tel:"+v;
+ if(t==="sms"&&!v.startsWith("SMSTO:"))v="SMSTO:"+v;
+ if(t==="wifi"&&!v.startsWith("WIFI:"))v="WIFI:S:"+v+";;";
+ return v;
+}
+function contrast(a,b){
+ const lum=h=>{let x=parseInt(h.slice(1),16),r=x>>16&255,g=x>>8&255,bl=x&255;
+  return [.2126,.7152,.0722].reduce((s,k,i)=>s+k*Math.pow(([r,g,bl][i]/255<=.03928)?[r,g,bl][i]/255/12.92:((([r,g,bl][i]/255)+.055)/1.055)**2.4),0)};
+ return (Math.max(lum(a),lum(b))+.05)/(Math.min(lum(a),lum(b))+.05);
+}
+function toast(s){$("toast").textContent=s;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),1800)}
+function snapshot(){
+ return {type:$("type").value,data:$("data").value,label:$("label").value,lang:$("lang").value,version:$("version").value,
+ dots,corner,cornerDot,fg:$("fg").value,bg:$("bg").value,gradient:$("gradient").checked,g1:$("g1").value,g2:$("g2").value,
+ rotation:$("rotation").value,logoSize:$("logosize").value,logoMargin:$("logomargin").value,showLogo:$("showlogo").checked,
+ size:$("size").value,margin:$("margin").value,ec:$("ec").value,frameText:$("frameText").value,frameStyle:$("frameStyle").value};
+}
+function update(){
+ const ec=$("ec").value.split(" ")[0], size=+$("size").value, margin=+$("margin").value;
+ const o={width:size,height:size,data:content(),margin,qrOptions:{errorCorrectionLevel:ec},dotsOptions:{type:dots,color:$("fg").value},
+ backgroundOptions:{color:$("bg").value},cornersSquareOptions:{type:corner,color:$("fg").value},cornersDotOptions:{type:cornerDot,color:$("fg").value}};
+ if($("gradient").checked)o.dotsOptions.gradient={type:"linear",rotation:+$("rotation").value,colorStops:[{offset:0,color:$("g1").value},{offset:1,color:$("g2").value}]};
+ if(logoData&&$("showlogo").checked){o.image=logoData;o.imageOptions={hideBackgroundDots:true,imageSize:+$("logosize").value/100,margin:+$("logomargin").value};}
+ qr.update(o);
+ $("sv").textContent=size;$("mv").textContent=margin;$("lsv").textContent=$("logosize").value+"%";$("lmv").textContent=$("logomargin").value;
+ $("rv").textContent=$("rotation").value+"°";$("mPattern").textContent=dots;$("mEC").textContent=ec;$("mSize").textContent=size+" × "+size;
+ $("mType").textContent=$("type").value.toUpperCase();$("mLogo").textContent=($("showlogo").checked&&logoData)?"On":"Off";$("mGradient").textContent=$("gradient").checked?"On":"Off";
+ $("caption").style.display=$("captionOn").checked?"block":"none";
+ $("frameText").style.display=$("frameStyle").value==="plain"?"none":"block";
+ const cr=contrast($("fg").value,$("bg").value);$("contrastInfo").textContent=cr>=7?"Excellent contrast":cr>=4.5?"Good contrast":"Low contrast — improve colors";
+ $("dataInfo").textContent=content().length+" characters";
+ $("scanStatus").textContent=content().length<1200?"● READY":"● COMPLEX DATA";
+ if(shadow)$("qr").parentElement.style.boxShadow="0 30px 100px #000b";else $("qr").parentElement.style.boxShadow="none";
+}
+function addHistory(){
+ let h=JSON.parse(localStorage.getItem("qrUltimateHistory")||"[]");h.unshift({t:new Date().toLocaleString(),d:content(),s:snapshot()});h=h.slice(0,8);localStorage.setItem("qrUltimateHistory",JSON.stringify(h));renderHistory();
+}
+function renderHistory(){
+ let h=JSON.parse(localStorage.getItem("qrUltimateHistory")||"[]"),box=$("history");
+ if(!h.length){box.innerHTML='<div class="note">Your recent designs will appear here.</div>';return}
+ box.innerHTML=h.map((x,i)=>`<div class="hist"><span>${x.t}<br>${String(x.d).slice(0,30)}${x.d.length>30?"…":""}</span><button data-i="${i}">LOAD</button></div>`).join("");
+ box.querySelectorAll("button").forEach(b=>b.onclick=()=>{let x=h[+b.dataset.i];applyState(x.s);toast("History design loaded")});
+}
+function applyState(s){
+ $("type").value=s.type;$("data").value=s.data;$("label").value=s.label||"";$("lang").value=s.lang||"Auto";$("version").value=s.version||"auto";
+ dots=s.dots;corner=s.corner;cornerDot=s.cornerDot;$("fg").value=s.fg;$("bg").value=s.bg;$("gradient").checked=s.gradient;
+ $("g1").value=s.g1;$("g2").value=s.g2;$("rotation").value=s.rotation||45;$("logosize").value=s.logoSize||25;$("logomargin").value=s.logoMargin||5;$("showlogo").checked=!!s.showLogo;
+ $("size").value=s.size||420;$("margin").value=s.margin||12;$("ec").value=s.ec||"M";$("frameText").value=s.frameText||"SCAN ME";$("frameStyle").value=s.frameStyle||"plain";
+ document.querySelectorAll("#dots .tab").forEach(x=>x.classList.toggle("active",x.dataset.v===dots));
+ document.querySelectorAll("#corner .tab").forEach(x=>x.classList.toggle("active",x.dataset.v===corner));
+ document.querySelectorAll("#cornerDot .tab").forEach(x=>x.classList.toggle("active",x.dataset.v===cornerDot));
+ $("gc").style.display=s.gradient?"grid":"none";update();
+}
+document.querySelectorAll("input,select,textarea").forEach(e=>e.addEventListener("input",update));
+$("gradient").onchange=()=>{$("gc").style.display=$("gradient").checked?"grid":"none";update()};
+document.querySelectorAll("#dots .tab").forEach(b=>b.onclick=()=>{document.querySelectorAll("#dots .tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");dots=b.dataset.v;update()});
+document.querySelectorAll("#corner .tab").forEach(b=>b.onclick=()=>{document.querySelectorAll("#corner .tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");corner=b.dataset.v;update()});
+document.querySelectorAll("#cornerDot .tab").forEach(b=>b.onclick=()=>{document.querySelectorAll("#cornerDot .tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");cornerDot=b.dataset.v;update()});
+$("logo").onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{logoData=r.result;$("showlogo").checked=true;update();toast("Logo loaded")};r.readAsDataURL(f)};
+document.querySelectorAll(".preset").forEach(b=>b.onclick=()=>{let p=presets[b.dataset.p];dots=p[0];$("fg").value=p[1];$("bg").value=p[2];$("g1").value=p[3];$("g2").value=p[4];$("gradient").checked=false;$("gc").style.display="none";document.querySelectorAll("#dots .tab").forEach(x=>x.classList.toggle("active",x.dataset.v===dots));update();toast(b.textContent+" preset applied")});
+$("white").onclick=()=>{$("qr").parentElement.style.background="#fff";["white","dark","transparent"].forEach(x=>$(x).classList.remove("active"));$("white").classList.add("active")};
+$("dark").onclick=()=>{$("qr").parentElement.style.background="#111827";["white","dark","transparent"].forEach(x=>$(x).classList.remove("active"));$("dark").classList.add("active")};
+$("transparent").onclick=()=>{$("qr").parentElement.style.background="transparent";["white","dark","transparent"].forEach(x=>$(x).classList.remove("active"));$("transparent").classList.add("active")};
+$("shadowToggle").onclick=()=>{shadow=!shadow;$("shadowToggle").classList.toggle("active",shadow);update()};
+$("png").onclick=()=>{qr.download({name:"QR-Studio-Ultimate-PRO",extension:"png"});addHistory();toast("PNG exported")};
+$("svg").onclick=()=>{qr.download({name:"QR-Studio-Ultimate-PRO",extension:"svg"});addHistory();toast("SVG exported")};
+$("copy").onclick=async()=>{try{let b=await qr.getRawData("png");await navigator.clipboard.write([new ClipboardItem({"image/png":b})]);$("copy").textContent="COPIED ✓";setTimeout(()=>$("copy").textContent="COPY",1300)}catch(e){await navigator.clipboard.writeText(content());$("copy").textContent="DATA COPIED ✓";setTimeout(()=>$("copy").textContent="COPY",1300)}};
+$("print").onclick=()=>{addHistory();setTimeout(()=>window.print(),150)};
+$("saveProject").onclick=()=>{localStorage.setItem("qrUltimateProject",JSON.stringify(snapshot()));toast("Project saved locally")};
+$("loadProject").onclick=()=>{let s=JSON.parse(localStorage.getItem("qrUltimateProject")||"null");if(s){applyState(s);toast("Project loaded")}else toast("No saved project found")};
+$("downloadProject").onclick=()=>{let blob=new Blob([JSON.stringify(snapshot(),null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="QR-Ultimate-PRO-Project.json";a.click();URL.revokeObjectURL(a.href);toast("Project JSON exported")};
+$("reset").onclick=()=>{location.reload()};
+$("random").onclick=()=>{let keys=Object.keys(presets),k=keys[Math.floor(Math.random()*keys.length)],p=presets[k];dots=p[0];$("fg").value=p[1];$("bg").value=p[2];$("g1").value=p[3];$("g2").value=p[4];$("gradient").checked=Math.random()>.45;$("gc").style.display=$("gradient").checked?"grid":"none";update();toast("Random professional style applied")};
+renderHistory();update();
+</script>
+</body>
+</html>
